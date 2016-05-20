@@ -3,5 +3,6 @@ Método de punto de pliegue (pinch point method) para obtener los servicios mín
 
 El delta de temperaturas por default es de 20 grados.
 
-**Uso: **
+*Uso: *
+
 `>> mpp(vectorDeCorrientes, DTmin)`
