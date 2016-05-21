@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 class Corriente(object):
     """
     Una clase para contener las propiedades necesarias para simular una corriente.
