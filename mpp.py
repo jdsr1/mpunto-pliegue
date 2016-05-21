@@ -77,11 +77,11 @@ def mpp(cc, DTmin=20):
 			i = i + 1
 	
 	pp = cascada.index(0) #el punto de pliegue es el lugar (índice) donde hay un cero
-						  #en la cascada de calor. (Este método no considera múltiples
-						  #puntos de pliegue)
-	Tpp = vTemp[pp]	      #Temperaturaseratura del punto de pliegue
-	smcal = cascada[0]	  #servicio mínimo de calentamiento
-	smenf = cascada[-1]	  #servicio mínimo de enfriamiento
+	                      #en la cascada de calor. (Este método no considera múltiples
+	                      #puntos de pliegue)
+	Tpp = vTemp[pp]	      #temperatura del punto de pliegue
+	smcal = cascada[0]    #servicio mínimo de calentamiento
+	smenf = cascada[-1]   #servicio mínimo de enfriamiento
 	
 	#Impresión de la cascada de calor final
 	i = 0
@@ -122,7 +122,7 @@ def diaCc(cc):
     cfrs = [c for c in cc if c.cal == False] #corrientes frías
     ccal = [c for c in cc if c.cal == True]  #corrientes calientes
     cc = cfrs + ccal #graficar primero las corrientes frías
-    j = len(cfrs) #lugar en el que cambian las corrientes frías a corrientes calientes
+    j = len(cfrs)    #lugar en el que cambian las corrientes frías a corrientes calientes
     
     i = 1
     while i <= len(cc):
