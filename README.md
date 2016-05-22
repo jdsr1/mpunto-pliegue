@@ -22,3 +22,8 @@ frías y calientes.
 Sintaxis de la función `ddc()`:
 
 `>> ddc(vectorDeCorrientes)`
+
+*Requerimientos*
+* Python 2 (IPython de preferencia)
+* matplotlib
+* numpy
