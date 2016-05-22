@@ -184,6 +184,6 @@ def ddc(cc):
 #c3 = Corriente(20,155, 20)
 #c4 = Corriente(40,112, 15)
 
-#vc = [c1,c2,c3,c4]
-#mpp(vc, 20)
-#ddc(vc)
+#cc = [c1,c2,c3,c4]
+#Tpp, smCal, smEnf = mpp(cc, 20)
+#ddc(cc)
