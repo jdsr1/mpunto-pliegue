@@ -177,13 +177,3 @@ def ddc(cc):
     plt.xlabel("Temperatura")
     plt.ylabel("Corrientes")
     plt.show()
-
-## Ejemplo
-#c1 = Corriente(175,45, 10)
-#c2 = Corriente(125,65, 40)
-#c3 = Corriente(20,155, 20)
-#c4 = Corriente(40,112, 15)
-
-#cc = [c1,c2,c3,c4]
-#Tpp, smCal, smEnf = mpp(cc, 20)
-#ddc(cc)
