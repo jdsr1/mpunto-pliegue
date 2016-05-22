@@ -1,15 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  mpp.py
-#  Método de punto de pliegue (Pinch point method) para obtener los servicios
-#  mínimos de calentamiento y enfriamiento necesarios para integrar completamente
-#  un sistema de corrientes.
-#
+# mppliegue.py
+# JuanDiego.SR92@gmail.com
+# ------------------------------------------------------------------------------
+# Método de punto de pliegue (Pinch point method) para obtener los servicios   
+# mínimos de calentamiento y enfriamiento necesarios para integrar completamente
+# un sistema de corrientes.
+# ------------------------------------------------------------------------------
+
 import numpy as np
 import matplotlib.pyplot as plt
+from corrs import *
 
-def mpp(cc, DTmin=20):
+def mpp(cc, DTmin=10):
 	"""
 	Regresa los servicios de calentamiento y enfriamiento mínimos, así como la
 	temperatura del punto de pliegue para el sistema formado por las corrientes
@@ -113,16 +117,19 @@ def mpp(cc, DTmin=20):
 	round2 = lambda x: round(x,2)
 	return map(round2, [Tpp, smcal, smenf])
 
-def diaCc(cc):
+def ddc(cc):
     """
-    Una función para visualizar las corrientes dadas en el vector cc, una vez la propiedad
-    Tpp de cada corriente haya sido ajustada.
+    Una función para visualizar las corrientes dadas en el vector cc, una vez la
+    propiedad Tpp de cada corriente ha sido ajustada. Todas las corrientes se
+    grafican entre x=Ti y x=Tf. La primera corriente en y=1, la segunda en y=2,
+    la n-ésima en y=n. Primero se grafican las corrientes frías (azules) y luego
+    las corrientes calientes (rojas).
     """
     
     cfrs = [c for c in cc if c.cal == False] #corrientes frías
     ccal = [c for c in cc if c.cal == True]  #corrientes calientes
     cc = cfrs + ccal #graficar primero las corrientes frías
-    j = len(cfrs)    #lugar en el que cambian las corrientes frías a corrientes calientes
+    j = len(cfrs)
     
     i = 1
     while i <= len(cc):
@@ -134,6 +141,21 @@ def diaCc(cc):
             plt.plot(x,y,'r<-') #rojo para las calientes
         else:
             plt.plot(x,y,'b>-') #azul para las frías
+        #Anotar calores arriba/debajo del punto de pliegue
+        if c.Qapp != 0:
+            if c.cal == True:
+                xm = (c.Tpp+c.Ti)/2
+            else:
+                xm = (c.Tpp+c.Tf)/2
+            ym = i + 0.1
+            plt.annotate(c.Qapp, xy=(xm,ym), xytext=(xm,ym))
+        if c.Qdpp != 0:
+            if c.cal == True:
+                xm = (c.Tpp+c.Tf)/2
+            else:
+                xm = (c.Tpp+c.Ti)/2
+            ym = i + 0.1
+            plt.annotate(c.Qdpp, xy=(xm,ym), xytext=(xm,ym))
         i = i + 1
     
     minT, maxT = cc[0].Ti, cc[0].Tf
@@ -145,7 +167,7 @@ def diaCc(cc):
     TppCal = ccal[0].Tpp
     TppFrs = cfrs[0].Tpp
     plt.plot([TppFrs, TppFrs], [0, j+0.25], 'b-.')
-    plt.plot([TppFrs, TppCal], [j+0.25, j+0.75], 'k-.') #diagonal que une TppCal y TppFrs
+    plt.plot([TppFrs, TppCal], [j+0.25, j+0.75], 'k-.')
     plt.plot([TppCal, TppCal], [j+0.75, i], 'r-.')
     
     #Ajustes del gráfico
@@ -155,3 +177,13 @@ def diaCc(cc):
     plt.xlabel("Temperatura")
     plt.ylabel("Corrientes")
     plt.show()
+
+## Ejemplo
+#c1 = Corriente(175,45, 10)
+#c2 = Corriente(125,65, 40)
+#c3 = Corriente(20,155, 20)
+#c4 = Corriente(40,112, 15)
+
+#vc = [c1,c2,c3,c4]
+#mpp(vc, 20)
+#ddc(vc)
