@@ -1,5 +1,5 @@
 # Método del punto de pliegue
-# Pinch-point method
+*Pinch-point method*
 
 Método para obtener los servicios de calentamiento y enfriamiento mínimos
 necesarios para integrar completamente un sistema de corrientes.
@@ -14,5 +14,11 @@ Sintaxis de la función principal:
 
 `>> mpp(vectorDeCorrientes, DTmin)`
 
-También se define la función `diaCc()`, útil para visualizar las corrientes
-en un gráfico, una vez se ha ajustado la propiedad Tpp de cada corriente.
+Una vez se haya ejecutado la función `mpp()`, puede usarse la función `ddc()`
+para visualizar las corrientes en un diagrama que indica sus temperaturas de 
+origen y finales, así como el punto de pliegue correspondiente a las corrientes
+frías y calientes.
+
+Sintaxis de la función `ddc()`:
+
+`>> ddc(vectorDeCorrientes)`
