@@ -23,7 +23,8 @@ class Corriente(object):
     @property
     def Qapp(self):
         """
-        Calcula el calor necesario arriba del punto de pliegue
+        Calcula el calor necesario arriba del punto de pliegue.
+        Regresa el valor absoluto.
         """
         if self.cal == True:
             return (self.Ti-self.Tpp)*self.WCp
@@ -32,7 +33,8 @@ class Corriente(object):
     @property
     def Qdpp(self):
         """
-        Calcula el calor necesario debajo del punto de pliegue
+        Calcula el calor necesario debajo del punto de pliegue. 
+        Regresa el valor absoluto.
         """
         if self.cal == True:
             return (self.Tpp-self.Tf)*self.WCp
