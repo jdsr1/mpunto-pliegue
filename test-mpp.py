@@ -21,5 +21,5 @@ c6 = Corriente( 53, 113, 7.627)
 c7 = Corriente( 40, 293, 1.690)
 
 cc = [c1,c2,c3,c4,c5,c6,c7]
-print mpp(cc)
+Tpp, smCal, smEnf = mpp(cc)
 ddc(cc)
