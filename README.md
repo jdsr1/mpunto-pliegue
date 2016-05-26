@@ -12,7 +12,8 @@ se suma (también la mitad) a las temperaturas de las corrientes frías.
 Una vez se haya ejecutado la función `mpunto_pliegue()`, puede usarse la función
 `diagrama_corrientes()` para visualizar las corrientes en un diagrama que indica
 sus temperaturas de origen y finales, así como el punto de pliegue correspondiente 
-a las corrientes frías y calientes.
+a las corrientes frías y calientes. Esta función también muestra las cargas
+térmicas arriba y debajo del punto de pliegue para cada corriente.
 
 ---
 **Requerimientos:** Python 2.7, matplotlib y numpy.
