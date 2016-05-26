@@ -13,7 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from corriente import *
 
-def mpunto_pliegue(cc, DTmin=20):
+def mpunto_pliegue(cc, DTmin=10):
     """
     Regresa los servicios de calentamiento y enfriamiento mínimos, así como la
     temperatura del punto de pliegue para el sistema formado por las corrientes
