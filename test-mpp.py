@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# main-mpp.py
+# test-mpp.py
 # JuanDiego.SR92@gmail.com
 # ------------------------------------------------------------------------------
 # Archivo de prueba.
