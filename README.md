@@ -5,7 +5,7 @@
 Método para obtener los servicios de calentamiento y enfriamiento mínimos
 necesarios para integrar completamente un sistema de corrientes.
 
-El delta T mínimo por default es de 20 grados, que en esta variante del método
+El delta T mínimo por default es de 10 grados, que en esta variante del método
 se resta (la mitad) a las temperaturas de las corrientes calientes a la vez que
 se suma (también la mitad) a las temperaturas de las corrientes frías.
 
