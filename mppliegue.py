@@ -15,9 +15,17 @@ from corriente import *
 
 def mpunto_pliegue(cc, DTmin=10):
     """
-    Regresa los servicios de calentamiento y enfriamiento mínimos, así como la
-    temperatura del punto de pliegue para el sistema formado por las corrientes
-    en el vector cc. Modifica la propiedad Tpp de cada corriente en cc.
+    Argumentos:
+        cc      = vector de corrientes
+        DTmin   = delta T mínimo (opcional)
+    Valor de retorno:
+        Tpp   = temperatura de punto de pliegue
+        smCal = servicio mínimo de calentamiento
+        smEnf = servicio mínimo de enfriamiento
+        
+    Modifica la propiedad Tpp de cada corriente en cc. Es necesario ejecutar
+    esta función antes que diagrama_corrientes() o curvas_compuestas() sobre el
+    mismo vector de corrientes.
     """
 
     vTemp = [] #vector de temperaturas
@@ -74,7 +82,7 @@ def mpunto_pliegue(cc, DTmin=10):
     while min(cascada) != 0:
         Qmin = min(cascada)
         i = 0
-        while i < len(vTemp):
+        while i < len(cascada):
             #Restar el valor mínimo a cada elemento del vector cascada
             cascada[i] = cascada[i] - Qmin
             i = i + 1
@@ -83,8 +91,8 @@ def mpunto_pliegue(cc, DTmin=10):
                           #cero en la cascada de calor. En caso de múltiples
                           #puntos de pliegue este método elegirá al primero.
     Tpp = vTemp[pp]       #temperatura del punto de pliegue
-    smcal = cascada[0]    #servicio mínimo de calentamiento
-    smenf = cascada[-1]   #servicio mínimo de enfriamiento
+    smCal = cascada[0]    #servicio mínimo de calentamiento
+    smEnf = cascada[-1]   #servicio mínimo de enfriamiento
     
     #Impresión de la cascada de calor final
     i = 0
@@ -96,9 +104,9 @@ def mpunto_pliegue(cc, DTmin=10):
     i = 0
     print "Q: ",
     while i < len(cascada)-1:
-        print cascada[i],'->',
+        print "%.2f %s" % (cascada[i],'->'),
         i = i + 1
-    print cascada[i]
+    print "%.2f" % cascada[i]
     
     #Restaurar las temperaturas de las corrientes a sus valores originales
     #Agregar la temperatura de punto de pliegue a cada corriente
@@ -112,29 +120,36 @@ def mpunto_pliegue(cc, DTmin=10):
             c.Ti = c.Ti - DTmin/2.0
             c.Tf = c.Tf - DTmin/2.0
     
-    #Regresar la temperatura del punto de pliegue y los servicios mínimos
     round2 = lambda x: round(x,2)
-    return map(round2, [Tpp, smcal, smenf])
+    return map(round2, [Tpp, smCal, smEnf])
 
 def diagrama_corrientes(cc):
     """
-    Una función para visualizar las corrientes dadas en el vector cc, una vez la
-    propiedad Tpp de cada corriente ha sido ajustada. Todas las corrientes se
-    grafican entre x=Ti y x=Tf. La primera corriente en y=1, la segunda en y=2,
-    la n-ésima en y=n. Primero se grafican las corrientes frías (azules) y luego
-    las corrientes calientes (rojas).
+    Argumentos:
+        cc = vector de corrientes
+    Valor de retorno:
+        Sin valor de retorno
+    
+    Esta función permite visualizar las corrientes dadas en el vector cc. Todas
+    las corrientes se grafican entre x=Ti y x=Tf. La primera corriente en y=1,
+    la segunda en y=2, la n-ésima en y=n. Las corrientes frías se grafican en
+    azul y las calientes en rojo. La temperatura de punto de pliegue se grafica
+    en el color correspondiente. En la gráfica también aparecen las cargas de las
+    corrientes, tanto arriba como debajo del punto de pliegue si es el caso.
+    Es necesario ejecutar mpunto_pliegue(cc) antes que esta función para obtener
+    los resultados deseados.
     """
     
     cfrs = [c for c in cc if c.cal == False] #corrientes frías
     ccal = [c for c in cc if c.cal == True]  #corrientes calientes
-    cc = cfrs + ccal #graficar primero las corrientes frías
-    j = len(cfrs)
+    
+    plt.figure('Diagrama de Corrientes')
     
     i = 1
     while i <= len(cc):
         c = cc[i-1]
         sep = abs(c.Ti - c.Tf)/10
-        x = np.linspace(c.Ti, c.Tf, sep)
+        x = np.linspace(c.Ti, c.Tf,2)
         y = [i for v in x]
         if c.cal == True:
             plt.plot(x,y,'r<-') #rojo para las calientes
@@ -169,14 +184,75 @@ def diagrama_corrientes(cc):
     #Graficar temperaturas de punto de pliegue
     TppCal = ccal[0].Tpp
     TppFrs = cfrs[0].Tpp
-    plt.plot([TppFrs, TppFrs], [0, j+0.25], 'b-.')
-    plt.plot([TppFrs, TppCal], [j+0.25, j+0.75], 'k-.')
-    plt.plot([TppCal, TppCal], [j+0.75, i], 'r-.')
+    plt.plot([TppFrs, TppFrs], [0, i], 'b--')
+    plt.plot([TppCal, TppCal], [0, i], 'r--')
     
     #Ajustes del gráfico
-    plt.axis([minT-10, maxT+10, 0, i])
-    plt.title("Diagrama de Corrientes")
-    plt.grid(True)
-    plt.xlabel("Temperatura")
-    plt.ylabel("Corrientes")
+    plt.axis([minT-10, maxT+10, 0, i], 5)
+    plt.title('Diagrama de Corrientes')
+    plt.xlabel('Temperatura')
+    plt.ylabel('Corrientes')
     plt.show()
+
+def curvas_compuestas(cc, smEnf):
+    """
+    Argumentos:
+        cc    = vector de corrientes
+        smEnf = servicio mínimo de enfriamiento
+    Valor de retorno:
+        Sin valor de retorno
+        
+    Grafica la curva compuesta fría y la curva compuesta caliente en un diagrama
+    de entalpía (X) contra temperatura (Y).
+    """
+    
+    cfrs = [c for c in cc if c.cal == False] #corrientes frías
+    ccal = [c for c in cc if c.cal == True]  #corrientes calientes
+    
+    # Curva compuesta caliente
+    vTempCal = []
+    for c in ccal:
+        if c.Ti not in vTempCal: vTempCal.append(c.Ti)
+        if c.Tf not in vTempCal: vTempCal.append(c.Tf)
+    vTempCal.sort()
+    
+    hCal = [0] * len(vTempCal)
+    i = 1
+    while i < len(hCal):
+        Qi = 0
+        for c in ccal:
+            if c.enIntervalo(vTempCal[i], vTempCal[i-1]):
+                Qi = Qi + (vTempCal[i]-vTempCal[i-1]) * c.WCp
+        hCal[i] = hCal[i-1] + Qi
+        i = i + 1
+    
+    # Curva compuesta fría
+    vTempFrs = []
+    for c in cfrs:
+        if c.Ti not in vTempFrs: vTempFrs.append(c.Ti)
+        if c.Tf not in vTempFrs: vTempFrs.append(c.Tf)
+    vTempFrs.sort()
+    
+    hFrs = [smEnf] * len(vTempFrs)
+    i = 1
+    while i < len(hFrs):
+        Qi = 0
+        for c in cfrs:
+            if c.enIntervalo(vTempFrs[i], vTempFrs[i-1]):
+                Qi = Qi + (vTempFrs[i]-vTempFrs[i-1]) * c.WCp
+        hFrs[i] = hFrs[i-1] + Qi
+        i = i + 1
+    
+    #Gráficas
+    plt.figure('Curvas Compuestas')
+    plt.plot(hCal, vTempCal, 'rs-')
+    plt.plot(hFrs, vTempFrs, 'bs-')
+    
+    #Ajustes del gráfico
+    plt.grid(True)
+    plt.xlabel(u'Entalpía')
+    plt.ylabel('Temperatura')
+    plt.legend(['Caliente', u'Fría'])
+    plt.title('Curvas Compuestas')
+    plt.show()
+    
