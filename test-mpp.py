@@ -9,6 +9,7 @@
 
 from mppliegue import mpunto_pliegue as mpp
 from mppliegue import diagrama_corrientes as ddc
+from mppliegue import curvas_compuestas as ccomp
 from corriente import Corriente
 
 # Definición del problema
@@ -23,3 +24,4 @@ c7 = Corriente( 40, 293, 1.690)
 cc = [c1,c2,c3,c4,c5,c6,c7]
 Tpp, smCal, smEnf = mpp(cc)
 ddc(cc)
+ccomp(cc, smEnf)
