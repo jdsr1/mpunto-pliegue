@@ -16,8 +16,8 @@ from corriente import *
 def mpunto_pliegue(cc, DTmin=10):
     """
     Argumentos:
-        cc      = vector de corrientes
-        DTmin   = delta T mínimo (opcional)
+        cc    = vector de corrientes
+        DTmin = delta T mínimo (opcional)
     Valor de retorno:
         Tpp   = temperatura de punto de pliegue
         smCal = servicio mínimo de calentamiento
