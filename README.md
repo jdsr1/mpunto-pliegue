@@ -5,9 +5,9 @@
 Método para obtener los servicios de calentamiento y enfriamiento mínimos
 necesarios para integrar completamente un sistema de corrientes.
 
-El delta T mínimo por default es de 10 grados, que en esta variante del método
-se resta (la mitad) a las temperaturas de las corrientes calientes a la vez que
-se suma (también la mitad) a las temperaturas de las corrientes frías.
+En esta variante del método la mitad del delta T mínimo (10 grados) se resta a
+las temperaturas de las corrientes calientes y se suma a las temperaturas de las
+corrientes frías.
 
 Una vez se haya ejecutado la función `mpunto_pliegue()`, puede usarse la función
 `diagrama_corrientes()` para visualizar las corrientes en un diagrama que indica
