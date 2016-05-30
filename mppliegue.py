@@ -96,13 +96,13 @@ def mpunto_pliegue(cc, DTmin=10):
     
     #Impresión de la cascada de calor final
     i = 0
-    print "T: ",
+    print "T:",
     while i < len(vTemp)-1:
         print vTemp[i],'->',
         i = i + 1
     print vTemp[i]
     i = 0
-    print "Q: ",
+    print "Q:",
     while i < len(cascada)-1:
         print "%.2f %s" % (cascada[i],'->'),
         i = i + 1
@@ -123,10 +123,11 @@ def mpunto_pliegue(cc, DTmin=10):
     round2 = lambda x: round(x,2)
     return map(round2, [Tpp, smCal, smEnf])
 
-def diagrama_corrientes(cc):
+def diagrama_corrientes(cc, u=None):
     """
     Argumentos:
         cc = vector de corrientes
+        u  = unidades de temperatura (str)
     Valor de retorno:
         Sin valor de retorno
     
@@ -188,17 +189,19 @@ def diagrama_corrientes(cc):
     plt.plot([TppCal, TppCal], [0, i], 'r--')
     
     #Ajustes del gráfico
-    plt.axis([minT-10, maxT+10, 0, i], 5)
+    plt.axis([minT-10, maxT+10, 0, i])
     plt.title('Diagrama de Corrientes')
-    plt.xlabel('Temperatura')
+    if u: plt.xlabel(u'Temperatura [°%s]' %u)
+    else: plt.xlabel('Temperatura')
     plt.ylabel('Corrientes')
     plt.show()
 
-def curvas_compuestas(cc, smEnf):
+def curvas_compuestas(cc, smEnf, u=None):
     """
     Argumentos:
         cc    = vector de corrientes
         smEnf = servicio mínimo de enfriamiento
+        u     = vector de unidades (0 => temperatura, 1 => entalpía)
     Valor de retorno:
         Sin valor de retorno
         
@@ -250,9 +253,12 @@ def curvas_compuestas(cc, smEnf):
     
     #Ajustes del gráfico
     plt.grid(True)
-    plt.xlabel(u'Entalpía')
-    plt.ylabel('Temperatura')
-    plt.legend(['Caliente', u'Fría'])
+    if u:
+        plt.xlabel(u'Entalpía [%s]' %u[1])
+        plt.ylabel(u'Temperatura [°%s]' %u[0])
+    else:
+        plt.xlabel(u'Entalpía')
+        plt.ylabel('Temperatura')
     plt.title('Curvas Compuestas')
     plt.show()
     
