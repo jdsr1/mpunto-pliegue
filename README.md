@@ -15,8 +15,11 @@ sus temperaturas de origen y finales, así como el punto de pliegue correspondie
 a las corrientes frías y calientes. Esta función también muestra las cargas
 térmicas arriba y debajo del punto de pliegue para cada corriente.
 
+![Diagrama de corrientes](../assets/diagrama_de_corrientes.png?raw=true)
+
+Las curvas compuestas también pueden ser graficadas:
+
+![Curvas compuestas](../assets/curvas_compuestas.png?raw=true)
+
 Más información sobre el método en
 [este enlace](https://es.wikipedia.org/wiki/An%C3%A1lisis_Pinch).
-
----
-**Requerimientos:** Python 2.7, matplotlib y numpy.
