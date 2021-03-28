@@ -1,7 +1,5 @@
 # Método de punto de pliegue
 
-**Última actualización:** Mayo 29, 2016
-
 Método para obtener los servicios de calentamiento y enfriamiento mínimos
 necesarios para integrar completamente un sistema de corrientes.
 
