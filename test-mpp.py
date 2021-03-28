@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 # test-mpp.py
-# JuanDiego.SR92@gmail.com
-# ------------------------------------------------------------------------------
 # Archivo de prueba.
 # ------------------------------------------------------------------------------
+
 
 from mppliegue import mpunto_pliegue as mpp
 from mppliegue import diagrama_corrientes as ddc

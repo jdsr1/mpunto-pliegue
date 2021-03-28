@@ -2,28 +2,24 @@
 # -*- coding: utf-8 -*-
 #
 # corriente.py
-# JuanDiego.SR92@gmail.com
-# ------------------------------------------------------------------------------
-# Clases y funciones necesarias para simular un objeto de tipo corriente. (No,
-# no un objeto cualquiera).
+# Clases y funciones necesarias para simular un objeto de tipo corriente.
 # ------------------------------------------------------------------------------
 
+
 class Corriente(object):
-    """
-    Una clase para contener las propiedades necesarias para simular una corriente.
-    """
-    
     def __init__(self, Ti, Tf, WCp):
-        self.Ti = float(Ti) #temperatura inicial
-        self.Tf = float(Tf) #temperatura final
-        self.Tpp = self.Ti  #temperatura del punto de pliegue
+        self.Ti = float(Ti)
+        self.Tf = float(Tf)
+        self.Tpp = self.Ti
         self.WCp = float(WCp)
-        self.cal = Ti > Tf  #verdadero si la corriente es una corriente caliente
+        self.cal = Ti > Tf
     
     @property
     def Qtotal(self):
         """Carga térmica de la corriente en valor absoluto."""
-        return abs(self.Tf-self.Ti) * self.WCp
+        q = abs(self.Tf - self.Ti)*self.WCp
+        q = round(q, 2)
+        return q
     
     @property
     def Qdpp(self):
@@ -33,20 +29,20 @@ class Corriente(object):
         """
 
         if self.cal == True:
+            # La corriente no cruza el punto de pliegue
             if self.Ti <= self.Tpp:
-                #la corriente no cruza el punto de pliegue
                 q = self.Qtotal
             else:
-                q = (self.Tpp-self.Tf)*self.WCp
+                q = (self.Tpp - self.Tf)*self.WCp
         else:
+            # La corriente no cruza el punto de pliegue
             if self.Tf <= self.Tpp:
-                #la corriente no cruza el punto de pliegue
                 q = self.Qtotal
             else:
-                q = (self.Tpp-self.Ti)*self.WCp
+                q = (self.Tpp - self.Ti)*self.WCp
         
-        if q > 0: return q
-        else: return 0
+        q = round(q, 2)
+        return q if q > 0 else 0
         
     @property
     def Qapp(self):
@@ -56,22 +52,22 @@ class Corriente(object):
         """
 
         if self.cal == True:
+            # La corriente no cruza el punto de pliegue
             if self.Tf >= self.Tpp:
-                #la corriente no cruza el punto de pliegue
                 q = self.Qtotal
             else:
                 q = (self.Ti-self.Tpp)*self.WCp
         else:
+            # La corriente no cruza el punto de pliegue
             if self.Ti >= self.Tpp:
-                #la corriente no cruza el punto de pliegue
                 q = self.Qtotal
             else:
                 q = (self.Tf-self.Tpp)*self.WCp
+
+        q = round(q, 2)        
+        return q if q > 0 else 0
                 
-        if q > 0: return q
-        else: return 0
-                
-    def enIntervalo(self, Ta, Tb):
+    def en_intervalo(self, Ta, Tb):
         """
         Determina si la corriente pasa por el intervalo de temperaturas [Ta, Tb].
         """
